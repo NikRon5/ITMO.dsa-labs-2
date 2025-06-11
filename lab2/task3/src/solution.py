@@ -1,11 +1,13 @@
 from utils.file_utlis import read_from_file, write_to_file
 from utils.time_memory_utlis import measure_time_and_memory
 
+
 input_path = "../txtf/input.txt"
 output_path = "../txtf/output.txt"
 
 
 class Node:
+    """Класс для представления узла дерева"""
     def __init__(self, key):
         self.key = key
         self.right = None
@@ -13,6 +15,7 @@ class Node:
 
 
 class BinarySearchTree:
+    """Класс бинарного дерева"""
     def __init__(self):
         self.root = None
 
@@ -20,27 +23,30 @@ class BinarySearchTree:
         if not self.root:
             self.root = Node(key)
             return
-        cur_node = self.root
+
+        cur_node = self.root # Начинаем с корня
 
         while True:
-            if key < cur_node.key:
+            if key < cur_node.key: # Идем в левое поддерево
                 if cur_node.left:
                     cur_node = cur_node.left
                 else:
-                    cur_node.left = Node(key)
+                    cur_node.left = Node(key) # Создаем новый узел
                     return
-            elif key > cur_node.key:
+            elif key > cur_node.key: # Идем в правое поддерево
                 if cur_node.right:
                     cur_node = cur_node.right
                 else:
-                    cur_node.right = Node(key)
+                    cur_node.right = Node(key) # Создаем новый узел
                     return
-            else:
+            else: # Ключ уже существует в дереве
                 return
 
     def find_min(self, key):
+        """Поиск минимального элемента"""
         node = self.root
         res = None
+
         while node:
             if node.key > key:
                 res = node
@@ -52,6 +58,7 @@ class BinarySearchTree:
 
 @measure_time_and_memory
 def do_oparations(operations):
+    """Обработка всех операций с деревом"""
     bst = BinarySearchTree()
     min_keys = []
 
@@ -68,16 +75,19 @@ def do_oparations(operations):
 
 
 def main():
-    # Reading input file
+    # Чтение входных данных из файла
     input_data = read_from_file(input_path)
 
-    # Algorithm
+    # Извлечение параметров из входных данных
     operations = input_data
+
+    # Вычисление результата
     result = do_oparations(operations)
 
-    # Writing output file
+    # Запись результата в выходной файл
     output_data = "\n".join(str(x) for x in result)
     write_to_file(output_path, output_data)
+
 
 if __name__ == "__main__":
     main()
